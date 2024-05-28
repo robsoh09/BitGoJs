@@ -1,0 +1,39 @@
+// this code does not come with any form of warranty. 
+// please do your own research 
+
+const bitgo = require('bitgo')
+require('dotenv').config();
+const apiKey = process.env.API_KEY
+const fs = require('fs')
+const bg = new bitgo.BitGo({
+  env: 'test',
+});
+
+const accessToken = apiKey;
+
+const coin = 'tpolygon';
+bg.register(coin, bg.createInstance);
+
+const walletId = '6655579fe402cec0a8124d090472269b';
+
+//start token access
+async function main() {
+  bg.authenticateWithAccessToken({ accessToken: accessToken });
+  const wallet = await bg.coin(coin).wallets().get({ id: walletId });
+
+
+const res = await bg.coin(coin).feeEstimate({ numBlocks: 2});
+
+process.stdout.write(JSON.stringify(res, null,6))
+
+
+
+
+}
+
+
+
+
+main().catch((e) => console.error(e));
+
+
